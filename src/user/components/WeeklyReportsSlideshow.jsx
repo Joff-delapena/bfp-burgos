@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Image as ImageIcon, X, Tag, Play, Pause, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { getOfficers } from '../../utils/storage';
+
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const CATEGORY_CONFIG = {
@@ -10,16 +10,6 @@ const CATEGORY_CONFIG = {
   Advisory:    { color: '#92400e', bg: 'rgba(146,64,14,0.08)', border: 'rgba(146,64,14,0.2)', emoji: '📢' },
   Achievement: { color: '#5b21b6', bg: 'rgba(91,33,182,0.08)',  border: 'rgba(91,33,182,0.2)',  emoji: '🏆' },
   Birthday:    { color: '#9d174d', bg: 'rgba(157,23,77,0.08)',  border: 'rgba(157,23,77,0.2)',  emoji: '🎂' },
-};
-const getCatConfig = (cat) =>
-  CATEGORY_CONFIG[cat] || { color: '#44403c', bg: 'rgba(68,64,60,0.06)', border: 'rgba(68,64,60,0.16)', emoji: '📄' };
-
-const RANK_ABBREVIATIONS = {
-  'Chief Fire Officer': 'CFO', 'Chief Fire Inspector': 'CFI',
-  'Senior Fire Inspector': 'SFInsp', 'Fire Inspector': 'FInsp',
-  'Senior Fire Officer III': 'SFO3', 'Senior Fire Officer II': 'SFO2',
-  'Senior Fire Officer I': 'SFO1', 'Fire Officer III': 'FO3',
-  'Fire Officer II': 'FO2', 'Fire Officer I': 'FO1',
 };
 
 const SLIDE_DURATION = 14000;
@@ -540,18 +530,13 @@ export function WeeklyReportsSlideshow({ reports, onRegisterJump }) {
   const [currentIndex,     setCurrentIndex]     = useState(0);
   const [isAutoPlaying,    setIsAutoPlaying]    = useState(true);
   const [direction,        setDirection]        = useState(0);
-  const [birthdayOfficers, setBirthdayOfficers] = useState([]);
   // Track whether any child lightbox is open — hides outer chevrons
   const [lightboxActive,   setLightboxActive]   = useState(false);
   const autoResumeRef = useRef(null);
 
-  useEffect(() => {
-    getOfficers()
-      .then(data => setBirthdayOfficers(data.filter(o => isBirthday(o.birthdate))))
-      .catch(err => console.error('Failed to load officers:', err));
-  }, []);
+  
 
-  const birthdaySlides = birthdayOfficers.map(o => ({ id: `birthday-${o.id}`, type: 'birthday', officer: o }));
+  
   const reportSlides   = reports.map(r => ({ id: r.id, type: 'report', report: r }));
   const allSlides      = [...birthdaySlides, ...reportSlides];
   const currentSlide   = allSlides[currentIndex] || null;
@@ -641,13 +626,7 @@ export function WeeklyReportsSlideshow({ reports, onRegisterJump }) {
             <p style={{ fontSize: 9, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.22em', color: '#c0392b', marginBottom: 2, fontFamily: "'Lato', sans-serif" }}>Station Updates</p>
             <h2 style={{ fontFamily: "'Oswald', sans-serif", fontSize: '1.28rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#1a1614', lineHeight: 1, margin: 0 }}>Weekly Reports</h2>
           </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {birthdayOfficers.length > 0 && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(30,27,75,0.06)', border: '1px solid rgba(91,33,182,0.2)', color: '#4338ca', borderRadius: 20, padding: '5px 14px', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em', animation: 'ssPulse 2s ease-in-out infinite', fontFamily: "'Lato', sans-serif" }}>
-              🎂 {birthdayOfficers.length} Birthday{birthdayOfficers.length > 1 ? 's' : ''} Today!
-            </span>
-          )}
+        
           <span style={{ fontSize: 12, fontWeight: 700, padding: '5px 14px', borderRadius: 20, background: 'rgba(192,57,43,0.07)', border: '1px solid rgba(192,57,43,0.18)', color: '#c0392b', letterSpacing: '0.05em', fontFamily: "'Lato', sans-serif" }}>
             {currentIndex + 1} / {allSlides.length}
           </span>

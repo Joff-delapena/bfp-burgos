@@ -4,7 +4,6 @@ import { Toaster } from 'sonner';
 // User Pages
 import { HomePage } from '../user/pages/HomePage';
 import { AboutPage } from '../user/pages/AboutPage';
-import { OfficersPage } from '../user/pages/OfficersPage';
 import { ContactPage } from '../user/pages/ContactPage';
 
 // Admin Pages
@@ -46,14 +45,7 @@ export default function App() {
               <AboutPage />
             </UserLayout>
           }
-        />
-        <Route
-          path="/officers"
-          element={
-            <UserLayout>
-              <OfficersPage />
-            </UserLayout>
-          }
+        
         />
         <Route
           path="/contact"

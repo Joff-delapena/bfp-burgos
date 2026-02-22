@@ -1,19 +1,24 @@
+// Import the functions you need
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+// Your Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCnCmMg0yp-cZHjbNmkqTktWrigWMZSX2A",
-  authDomain: "bfp-station1-cogon-561b7.firebaseapp.com",
-  projectId: "bfp-station1-cogon-561b7",
-  storageBucket: "bfp-station1-cogon-561b7.firebasestorage.app",
-  messagingSenderId: "579230809737",
-  appId: "1:579230809737:web:34693a9aca69e28e86d058",
+  apiKey: "AIzaSyBZisflUAeJjd3AiHuq3O4gHEfcmoboHnM",
+  authDomain: "bfp-burgos.firebaseapp.com",
+  projectId: "bfp-burgos",
+  storageBucket: "bfp-burgos.firebasestorage.app",
+  messagingSenderId: "636907653019",
+  appId: "1:636907653019:web:25b210eec95e1f62f8c33e",
+  measurementId: "G-4CY4R23F5R"
 };
 
-// 🔥 IMPORTANT: app must be const
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// 🔥 THESE EXPORTS MUST EXIST
+// ✅ ADD THESE EXPORTS (VERY IMPORTANT)
 export const db = getFirestore(app);
 export const storage = getStorage(app);

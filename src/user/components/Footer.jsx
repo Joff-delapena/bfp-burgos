@@ -90,7 +90,6 @@ export function Footer() {
                 {[
                   { to: '/', label: 'Home' },
                   { to: '/about', label: 'About Us' },
-                  { to: '/officers', label: 'Our Officers' },
                   { to: '/contact', label: 'Contact Us' },
                 ].map(({ to, label }) => (
                   <Link key={to} to={to} className="footer-link">{label}</Link>
