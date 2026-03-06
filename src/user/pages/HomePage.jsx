@@ -530,7 +530,7 @@ export function HomePage() {
 
           {/* Outline sub-title */}
           <div className="hm-f3" style={{ marginBottom: 22 }}>
-            <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: `1.5px rgba(220,60,30,0.8)`, color: 'transparent', margin: 0, marginBottom: 16 }}>
+            <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: "1.5px rgba(220,60,30,0.8)", color: 'transparent', margin: 0, marginBottom: 16 }}>
               FIRE SUB-STATION 1A
             </h2>
             <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: `1.5px rgba(220,60,30,0.8)`, color: 'darkorange', margin: 0, marginBottom: 16,  position: 'relative' }}>
