@@ -184,6 +184,7 @@ function OrgMemberCard({ officer, c }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
+      className="op-org-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -193,8 +194,6 @@ function OrgMemberCard({ officer, c }) {
         border: `1.5px solid ${hovered ? c.border : 'rgba(255,255,255,0.07)'}`,
         borderRadius: 22,
         boxShadow: hovered ? `0 16px 48px ${c.glow}` : '0 2px 12px rgba(0,0,0,0.3)',
-        width: 270, minWidth: 200,
-        height: 300,
         transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
         transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, border-color 0.25s, background 0.25s',
       }}
@@ -270,7 +269,7 @@ function OrgSection({ cat, officers }) {
           <Icon size={19} color="white" strokeWidth={2.2} />
         </div>
         <div style={{ lineHeight: 1.25 }}>
-          <p style={{ fontSize: 14, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: c.color, margin: 0, fontFamily: "'Bebas Neue',sans-serif", fontSize: 16 }}>{c.label}</p>
+          <p style={{ fontSize: 16, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: c.color, margin: 0, fontFamily: "'Bebas Neue',sans-serif" }}>{c.label}</p>
           <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.4)', margin: 0 }}>{c.desc}</p>
         </div>
         <span style={{
@@ -281,9 +280,10 @@ function OrgSection({ cat, officers }) {
 
       <div style={{ width: 2, height: 20, background: `linear-gradient(to bottom,${c.border},transparent)`, marginBottom: 4 }} />
 
+      {/* Responsive rows — wraps on mobile */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%' }}>
         {rows.map((row, ri) => (
-          <div key={ri} style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'nowrap' }}>
+          <div key={ri} className="op-org-row">
             {row.map(o => <OrgMemberCard key={o.id} officer={o} c={c} />)}
           </div>
         ))}
@@ -350,19 +350,84 @@ export function OfficersPage() {
         .op-name { font-size:14px; font-weight:700; color:white; line-height:1.35; margin:0; word-break:break-word; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; width:100%; text-align:center; }
         .op-rank { font-size:11.5px; font-weight:600; color:#ff6b4a; margin:3px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; text-align:center; }
         .op-role { font-size:12.5px; font-weight:500; color:rgba(255,255,255,0.45); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; margin:0; }
+
+        /* Org card row — wraps gracefully on small screens */
+        .op-org-row {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        .op-org-card {
+          width: 220px;
+          min-width: 160px;
+          flex: 0 0 auto;
+        }
+
+        /* Filters row stacks on mobile */
+        .op-filter-row {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          align-items: center;
+          margin-bottom: 14px;
+        }
+        .op-filter-search { flex: 1; min-width: 160px; }
+        .op-filter-rank   { width: 100%; }
+
+        /* Hero stats wrap */
+        .op-hero-stats {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+        }
+        .op-hero-stat {
+          padding: 12px 22px;
+          border-radius: 14px;
+          text-align: center;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          backdrop-filter: blur(10px);
+          min-width: 88px;
+          flex: 1 1 88px;
+          max-width: 150px;
+        }
+
+        /* Org chart root box wraps text on mobile */
+        .op-org-root {
+          display: inline-flex;
+          align-items: center;
+          gap: 14px;
+          padding: 15px 24px;
+          border-radius: 18px;
+          background: linear-gradient(135deg,#8b1a0e,#dc3c1e);
+          box-shadow: 0 12px 48px rgba(220,60,30,0.4), 0 0 0 1px rgba(220,60,30,0.3);
+          flex-wrap: wrap;
+          justify-content: center;
+          text-align: center;
+        }
+
+        @media (max-width: 640px) {
+          .op-filter-rank { width: 100% !important; }
+          .op-org-card { width: calc(50% - 8px); min-width: 140px; }
+          .op-org-card .op-name { font-size: 12px !important; }
+          .op-hero-stat { min-width: 70px; padding: 10px 12px; }
+          .op-org-row { gap: 10px; }
+        }
+
+        @media (max-width: 400px) {
+          .op-org-card { width: 100%; max-width: 280px; }
+        }
       `}</style>
 
       {/* ── HERO ── */}
       <section style={{ position: 'relative', overflow: 'hidden', padding: '80px 20px 90px', background: '#0a0705' }}>
-        {/* Red left accent bar */}
         <div style={{ position: 'absolute', top: 0, left: 0, width: 4, height: '100%', background: 'linear-gradient(to bottom,#dc3c1e,#e67e22,transparent)', opacity: 0.9 }} />
-        {/* Top accent stripe */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#8b1a0e,#dc3c1e,#e67e22,#dc3c1e,#8b1a0e)' }} />
-        {/* Glow orb */}
         <div style={{ position: 'absolute', top: '-20%', left: '-10%', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(180,30,10,0.18) 0%,transparent 65%)', pointerEvents: 'none' }} />
-        {/* Grid texture */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.04, backgroundImage: 'linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px)', backgroundSize: '52px 52px' }} />
-        {/* Ember particles */}
         {[
           { left: '15%', size: 4, dur: '4.2s', delay: '0s' },
           { left: '32%', size: 3, dur: '5.6s', delay: '1.1s' },
@@ -373,32 +438,30 @@ export function OfficersPage() {
         ))}
 
         <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1, textAlign: 'center' }}>
-          {/* Badge */}
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 18px', borderRadius: 999, background: 'rgba(220,60,30,0.18)', border: '1px solid rgba(220,60,30,0.35)', marginBottom: 20 }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', flexShrink: 0, }} />
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', flexShrink: 0 }} />
             <span style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.8)', fontFamily: "'Syne',sans-serif" }}>
               BFP Station 1A · Station Personnel
             </span>
           </div>
 
-          <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(3.2rem,9vw,6rem)', letterSpacing: '0.06em', color: 'white', lineHeight: 1, margin: '0 0 6px' }}>
+          <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.8rem,9vw,6rem)', letterSpacing: '0.06em', color: 'white', lineHeight: 1, margin: '0 0 6px' }}>
             Our Officers
           </h1>
-          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(1.4rem,3.5vw,2.2rem)', letterSpacing: '0.08em', WebkitTextStroke: '1.5px rgba(220,60,30,0.6)', color: 'transparent', lineHeight: 1, margin: '0 0 20px' }}>
+          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(1.1rem,3.5vw,2.2rem)', letterSpacing: '0.08em', WebkitTextStroke: '1.5px rgba(220,60,30,0.6)', color: 'transparent', lineHeight: 1, margin: '0 0 20px' }}>
             BFP Station 1A — Burgos
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, maxWidth: 460, margin: '0 auto 36px', lineHeight: 1.82, fontWeight: 500 }}>
             Meet the dedicated men serving BFP Station 1A —<br />Cagayan de Oro City
           </p>
 
-          {/* Stats */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10 }}>
+          <div className="op-hero-stats">
             {[
               { v: loading ? '…' : sorted.length, l: 'Active Officers' },
               { v: '24/7', l: 'On Duty' },
               { v: 'Station 1A', l: 'Assignment' },
             ].map(({ v, l }) => (
-              <div key={l} style={{ padding: '12px 22px', borderRadius: 14, textAlign: 'center', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', minWidth: 96 }}>
+              <div key={l} className="op-hero-stat">
                 <p style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 26, letterSpacing: '0.06em', color: 'white', lineHeight: 1, margin: 0 }}>{v}</p>
                 <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.16em', color: 'rgba(255,255,255,0.35)', margin: '4px 0 0' }}>{l}</p>
               </div>
@@ -408,27 +471,27 @@ export function OfficersPage() {
       </section>
 
       {/* ── FILTERS ── */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px 0', position: 'relative', zIndex: 10 }}>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 16px 0', position: 'relative', zIndex: 10 }}>
+        <div className="op-filter-row">
           {/* Search */}
-          <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
+          <div className="op-filter-search" style={{ position: 'relative' }}>
             <Search size={14} style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: '#dc3c1e', pointerEvents: 'none' }} />
             <input type="text" className="op-si" value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search by name, rank, or assignment…"
+              placeholder="Search name, rank, assignment…"
               style={{ width: '100%', paddingLeft: 40, paddingRight: 14, paddingTop: 11, paddingBottom: 11, borderRadius: 10, fontSize: 13, fontWeight: 500, background: 'rgba(255,255,255,0.05)', border: '1.5px solid rgba(255,255,255,0.1)', color: 'white', fontFamily: "'Syne',sans-serif" }} />
           </div>
 
           {/* Rank dropdown */}
-          <div style={{ position: 'relative' }}>
+          <div className="op-filter-rank" style={{ position: 'relative' }}>
             <button onClick={() => setRankOpen(p => !p)}
-              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '11px 16px', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', minWidth: 168, justifyContent: 'space-between', background: selRank !== 'All Ranks' ? 'rgba(220,60,30,0.14)' : 'rgba(255,255,255,0.05)', border: `1.5px solid ${selRank !== 'All Ranks' ? 'rgba(220,60,30,0.4)' : 'rgba(255,255,255,0.1)'}`, color: selRank !== 'All Ranks' ? '#ff6b4a' : 'rgba(255,255,255,0.5)', fontFamily: "'Syne',sans-serif" }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '11px 16px', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', width: '100%', justifyContent: 'space-between', background: selRank !== 'All Ranks' ? 'rgba(220,60,30,0.14)' : 'rgba(255,255,255,0.05)', border: `1.5px solid ${selRank !== 'All Ranks' ? 'rgba(220,60,30,0.4)' : 'rgba(255,255,255,0.1)'}`, color: selRank !== 'All Ranks' ? '#ff6b4a' : 'rgba(255,255,255,0.5)', fontFamily: "'Syne',sans-serif" }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Filter size={13} />{selRank !== 'All Ranks' ? (LOCAL_RA[selRank] || selRank) : 'All Ranks'}
+                <Filter size={13} />{selRank !== 'All Ranks' ? (LOCAL_RA[selRank] || selRank) : 'Filter by Rank'}
               </span>
-              <ChevronDown size={13} style={{ transform: rankOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s' }} />
+              <ChevronDown size={13} style={{ transform: rankOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s', flexShrink: 0 }} />
             </button>
             {rankOpen && (
-              <div className="op-fdd" style={{ position: 'absolute', right: 0, top: '100%', marginTop: 6, borderRadius: 10, overflow: 'hidden', zIndex: 30, background: '#1a0f0a', border: '1.5px solid rgba(220,60,30,0.25)', boxShadow: '0 12px 40px rgba(0,0,0,0.7)', minWidth: 220, padding: '4px 0' }}>
+              <div className="op-fdd" style={{ position: 'absolute', left: 0, right: 0, top: '100%', marginTop: 6, borderRadius: 10, overflow: 'hidden', zIndex: 30, background: '#1a0f0a', border: '1.5px solid rgba(220,60,30,0.25)', boxShadow: '0 12px 40px rgba(0,0,0,0.7)', padding: '4px 0' }}>
                 {uRanks.map(rk => (
                   <button key={rk} className={`op-ro ${selRank === rk ? 'act' : ''}`} onClick={() => { setSelRank(rk); setRankOpen(false); }}>{rk}</button>
                 ))}
@@ -437,14 +500,28 @@ export function OfficersPage() {
           </div>
         </div>
 
-        {/* Category tabs */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+        {/* Category tabs — scrollable on mobile */}
+        <div style={{ display: 'flex', gap: 7, overflowX: 'auto', paddingBottom: 6, WebkitOverflowScrolling: 'touch' }}>
           <button className="op-tab" onClick={() => setSelCat('All')}
             style={selCat === 'All' ? { background: 'linear-gradient(135deg,#8b1a0e,#dc3c1e)', color: 'white', border: '1.5px solid transparent', boxShadow: '0 4px 18px rgba(220,60,30,0.35)', transform: 'translateY(-1px)' } : {}}>
             <Users size={11} strokeWidth={2.2} />
             All Officers
             <span style={{ fontSize: 10, fontWeight: 800, padding: '1px 6px', borderRadius: 5, background: selCat === 'All' ? 'rgba(255,255,255,0.2)' : 'rgba(220,60,30,0.12)', color: selCat === 'All' ? 'white' : '#ff6b4a' }}>{sorted.length}</span>
           </button>
+          {CATEGORY_OPTIONS.map(cat => {
+            const c = getCat(cat);
+            const count = sorted.filter(o => o.category === cat).length;
+            if (!count) return null;
+            const active = selCat === cat;
+            return (
+              <button key={cat} className="op-tab" onClick={() => setSelCat(cat)}
+                style={active ? { background: c.strip, color: 'white', border: '1.5px solid transparent', boxShadow: `0 4px 18px ${c.glow}`, transform: 'translateY(-1px)' } : {}}>
+                <c.Icon size={11} strokeWidth={2.2} />
+                {c.short || c.label}
+                <span style={{ fontSize: 10, fontWeight: 800, padding: '1px 6px', borderRadius: 5, background: active ? 'rgba(255,255,255,0.2)' : c.pillBg, color: active ? 'white' : c.pillColor }}>{count}</span>
+              </button>
+            );
+          })}
         </div>
 
         {(search || selRank !== 'All Ranks' || selCat !== 'All') && !loading && (
@@ -456,7 +533,7 @@ export function OfficersPage() {
       </section>
 
       {/* ── OFFICERS DISPLAY ── */}
-      <section style={{ maxWidth: 1400, margin: '0 auto', padding: '28px 20px 80px' }}>
+      <section style={{ maxWidth: 1400, margin: '0 auto', padding: '28px 16px 80px' }}>
         {loading ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 0' }}>
             <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid #dc3c1e', borderTopColor: 'transparent', animation: 'opSpin 0.9s linear infinite', marginBottom: 14 }} />
@@ -476,18 +553,13 @@ export function OfficersPage() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Root node */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 0 }}>
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 14, padding: '15px 30px',
-                borderRadius: 18,
-                background: 'linear-gradient(135deg,#8b1a0e,#dc3c1e)',
-                boxShadow: '0 12px 48px rgba(220,60,30,0.4), 0 0 0 1px rgba(220,60,30,0.3)',
-              }}>
-                <div style={{ width: 42, height: 42, borderRadius: 11, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="op-org-root">
+                <div style={{ width: 42, height: 42, borderRadius: 11, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <ShieldCheck size={22} color="white" strokeWidth={2.2} />
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <p style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.55)', margin: '0 0 1px', fontFamily: "'Syne',sans-serif" }}>BFP Station 1</p>
-                  <p style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.06em', color: 'white', margin: 0, lineHeight: 1 }}>Organizational Chart</p>
+                <div>
+                  <p style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.55)', margin: '0 0 1px', fontFamily: "'Syne',sans-serif" }}>BFP Station 1A</p>
+                  <p style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(1.4rem,5vw,1.75rem)', letterSpacing: '0.06em', color: 'white', margin: 0, lineHeight: 1 }}>Organizational Chart</p>
                 </div>
               </div>
               <div style={{ width: 2, height: 36, background: 'linear-gradient(to bottom,#dc3c1e,rgba(220,60,30,0.1))', marginBottom: 0 }} />
@@ -512,7 +584,7 @@ export function OfficersPage() {
               );
             })}
 
-            {/* Unassigned / Operations */}
+            {/* Unassigned */}
             {(() => {
               const unc = filtered.filter(o => !o.category || !CATEGORY_OPTIONS.includes(o.category));
               if (!unc.length) return null;
@@ -528,12 +600,8 @@ export function OfficersPage() {
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 800, padding: '2px 9px', borderRadius: 6, background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.45)', border: '1.5px solid rgba(255,255,255,0.1)', marginLeft: 6 }}>{unc.length}</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-                    {Array.from({ length: Math.ceil(unc.length / 4) }, (_, ri) => (
-                      <div key={ri} style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
-                        {unc.slice(ri * 4, ri * 4 + 4).map(o => <OrgMemberCard key={o.id} officer={o} c={FALLBACK} />)}
-                      </div>
-                    ))}
+                  <div className="op-org-row">
+                    {unc.map(o => <OrgMemberCard key={o.id} officer={o} c={FALLBACK} />)}
                   </div>
                 </div>
               );
@@ -541,14 +609,14 @@ export function OfficersPage() {
           </div>
 
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 18, alignItems: 'stretch' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: 16, alignItems: 'stretch' }}>
             {filtered.map(o => <OfficerCard key={o.id} officer={o} />)}
           </div>
         )}
       </section>
 
       {/* ── CONTACT BAR ── */}
-      <section style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(220,60,30,0.15)', padding: '28px 20px 40px' }}>
+      <section style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(220,60,30,0.15)', padding: '28px 16px 40px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '20px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1.5px solid rgba(220,60,30,0.18)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: 'rgba(220,60,30,0.12)', border: '1.5px solid rgba(220,60,30,0.25)' }}>
