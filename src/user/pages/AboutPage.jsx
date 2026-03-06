@@ -148,7 +148,7 @@ export function AboutPage() {
             <span style={{ flex:1, height:1, background:"linear-gradient(90deg,rgba(220,60,30,0.6),transparent)", maxWidth:120 }} />
           </div>
           <h1 className="bfp-h bfp-in bfp-in-d2" style={{ fontSize:"clamp(4.5rem,13vw,9rem)", color:"white", marginBottom:10 }}>About</h1>
-          <h1 className="bfp-h bfp-in bfp-in-d3" style={{ fontSize:"clamp(4.5rem,13vw,9rem)", WebkitTextStroke: `1.5px rgba(220,60,30,0.8)`, color:"transparent", lineHeight:.95, marginBottom:40 }}>Station 1A</h1>
+          <h1 className="bfp-h bfp-in bfp-in-d3" style={{ fontSize:"clamp(4.5rem,13vw,9rem)", WebkitTextStroke: "1.5px rgba(220,60,30,0.8)", color:"transparent", lineHeight:.95, marginBottom:40 }}>Station 1A</h1>
           <div className="bfp-in bfp-in-d4" style={{ display:"flex", alignItems:"center", gap:20, flexWrap:"wrap" }}>
             <div style={{ display:"flex", alignItems:"center", gap:8 }}>
               <div style={{ width:8, height:8, borderRadius:"50%", background:"#dc3c1e", animation:"bfp-pulse 2s infinite" }} />
