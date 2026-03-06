@@ -134,7 +134,7 @@ export function AdminLogin() {
             Admin Portal
           </h1>
           <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.45)', margin: 0, fontWeight: 500 }}>
-            BFP Station 1 Cogon — Management System
+            BFP Station 1 BFP STATION 1A - BURGOS — Management System
           </p>
         </div>
 
@@ -156,7 +156,7 @@ export function AdminLogin() {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {[
-              { icon: <Shield size={13} />, text: 'This portal is exclusively for authorized BFP Station 1 Cogon personnel only. Unauthorized access is strictly prohibited.' },
+              { icon: <Shield size={13} />, text: 'This portal is exclusively for authorized BFP Station 1 BFP STATION 1A - BURGOS personnel only. Unauthorized access is strictly prohibited.' },
               { icon: <Lock size={13} />, text: 'All actions performed in this system are logged and may be reviewed by station administrators.' },
                 ].map(({ icon, text }, i) => (
               <div key={i} className="al-note-item">

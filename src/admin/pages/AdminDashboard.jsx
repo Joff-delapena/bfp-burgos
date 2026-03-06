@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { LogOut, Users, FileText, Phone, LayoutDashboard, ExternalLink, Shield, ChevronRight, Flame, Activity, AlertTriangle } from 'lucide-react'
+import { LogOut, Users, FileText, Phone, LayoutDashboard, ExternalLink, Shield, ChevronRight, Flame, Activity, AlertTriangle } from 'lucide-react';
+import { OfficersManager } from '../components/OfficersManager';
 import { WeeklyReportsManager } from '../components/WeeklyReportsManager';
 import { ContactManager } from '../components/ContactManager';
-import { getWeeklyReports } from '../../utils/storage';
+import { getOfficers, getWeeklyReports } from '../../utils/storage';
 import { toast } from 'sonner';
 
 export function AdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [stats, setStats] = useState({ reports: 0 });
+  const [stats, setStats] = useState({ officers: 0, reports: 0 });
   const [statsLoading, setStatsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -22,8 +23,8 @@ export function AdminDashboard() {
     const loadStats = async () => {
       setStatsLoading(true);
       try {
-        const [reports] = await Promise.all([getWeeklyReports()]);
-        setStats({reports: reports.length });
+        const [officers, reports] = await Promise.all([getOfficers(), getWeeklyReports()]);
+        setStats({ officers: officers.length, reports: reports.length });
       } catch (err) {
         console.error(err);
         toast.error('Could not load stats — check Firestore rules.');
@@ -63,6 +64,7 @@ export function AdminDashboard() {
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard',     icon: LayoutDashboard },
+    { id: 'officers',  label: 'Officers',       icon: Users },
     { id: 'reports',   label: 'Weekly Reports', icon: FileText },
     { id: 'contact',   label: 'Contact Info',   icon: Phone },
   ];
@@ -206,7 +208,7 @@ export function AdminDashboard() {
             </div>
             <div>
               <p style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#c0392b', lineHeight: 1 }}>Bureau of Fire Protection</p>
-              <p style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '0.06em', fontSize: '1rem', color: '#1c0a08', lineHeight: 1.25, marginTop: 3 }}>BFP Station 1 — Cogon</p>
+              <p style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '0.06em', fontSize: '1rem', color: '#1c0a08', lineHeight: 1.25, marginTop: 3 }}>BFP STATION 1A - BURGOS</p>
             </div>
           </div>
 
@@ -264,7 +266,7 @@ export function AdminDashboard() {
                 <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2rem,5vw,2.8rem)', letterSpacing: '0.06em', lineHeight: 1, color: '#1c0a08', margin: 0 }}>
                   Station Overview
                 </h1>
-                <p style={{ fontSize: 13, color: '#9c7b74', marginTop: 6 }}>BFP Station 1 Cogon — Real-time management dashboard</p>
+                <p style={{ fontSize: 13, color: '#9c7b74', marginTop: 6 }}>BFP STATION 1A - BURGOS — Real-time management dashboard</p>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-xl"
                 style={{ background: '#fff5f3', border: '1.5px solid #fad0c8' }}>
@@ -276,6 +278,7 @@ export function AdminDashboard() {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
               {[
+                { label: 'Total Officers',       value: stats.officers, max: 150, color: '#c0392b', bg: '#fff5f3', stripe: 'linear-gradient(90deg,#c0392b,#e74c3c)', icon: Users,    sub: 'Active Personnel' },
                 { label: 'Weekly Reports Filed', value: stats.reports,  max: 1000, color: '#d35400', bg: '#fff8f3', stripe: 'linear-gradient(90deg,#d35400,#e67e22)', icon: FileText, sub: 'Reports Published' },
                 { label: 'Station Status', isStatus: true, color: '#16a34a', bg: '#f0fdf4', stripe: 'linear-gradient(90deg,#16a34a,#22c55e)', icon: Shield, sub: 'All Systems Normal' },
               ].map(({ label, value, max, color, bg, stripe, icon: Icon, sub, isStatus }) => (
@@ -307,7 +310,13 @@ export function AdminDashboard() {
 
                   {!isStatus && (
                     <>
-                     
+                      <div className="flex justify-between mb-1.5">
+                        <span style={{ fontSize: 10, color: '#c4a8a0', fontWeight: 600 }}>{sub}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color }}>{statsLoading ? '—' : `${Math.round((value / max) * 100)}%`}</span>
+                      </div>
+                      <div style={{ height: 5, borderRadius: 99, background: `${color}14`, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', borderRadius: 99, background: stripe, width: statsLoading ? '0%' : `${Math.min((value / max) * 100, 100)}%`, transition: 'width 0.8s ease' }} />
+                      </div>
                     </>
                   )}
                   {isStatus && <p style={{ fontSize: 11, fontWeight: 600, color: '#86a890' }}>{sub}</p>}
@@ -323,7 +332,7 @@ export function AdminDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                
+                { tab: 'officers', icon: Users,    color: '#c0392b', bg: '#fff5f3', border: '#fad0c8', title: 'Manage Officers',  desc: 'Add, edit, or remove officer records from the roster' },
                 { tab: 'reports',  icon: FileText, color: '#d35400', bg: '#fff8f3', border: '#fcd5b0', title: 'Weekly Reports',  desc: 'Publish and manage station activities & updates' },
                 { tab: 'contact',  icon: Phone,    color: '#b45309', bg: '#fffbf0', border: '#fde9a8', title: 'Contact Info',    desc: 'Update public emergency contact details' },
               ].map(({ tab, icon: Icon, color, bg, border, title, desc }) => (
@@ -343,10 +352,12 @@ export function AdminDashboard() {
 
             <div className="mt-8 pt-5 flex items-center gap-2" style={{ borderTop: '1px dashed #f0ddd8' }}>
               <Flame size={12} style={{ color: '#e0a090' }} />
-              <p style={{ fontSize: 11, color: '#c4a8a0' }}>BFP Station 1 — Cogon, Cagayan de Oro City · Admin Panel v1.0</p>
+              <p style={{ fontSize: 11, color: '#c4a8a0' }}>BFP STATION 1A - BURGOS, Cagayan de Oro City · Admin Panel v1.0</p>
             </div>
           </div>
         )}
+
+        {activeTab === 'officers' && <div className="fade-up max-w-7xl mx-auto"><OfficersManager /></div>}
         {activeTab === 'reports'  && <div className="fade-up max-w-7xl mx-auto"><WeeklyReportsManager /></div>}
         {activeTab === 'contact'  && <div className="fade-up max-w-7xl mx-auto"><ContactManager /></div>}
       </main>
@@ -375,7 +386,7 @@ export function AdminDashboard() {
                     <span className="lo-crumb-item" style={{ color: '#c0392b' }}>Logout</span>
                   </div>
                   <h2 className="lo-title">End Session?</h2>
-                  <p className="lo-sub">BFP Station 1 Cogon · Admin Panel</p>
+                  <p className="lo-sub">BFP STATION 1A - BURGOS · Admin Panel</p>
                 </div>
               </div>
             </div>

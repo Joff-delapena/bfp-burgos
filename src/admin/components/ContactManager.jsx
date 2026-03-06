@@ -307,7 +307,7 @@ export function ContactManager() {
                 { key: 'nationalEmergency', label: 'National Emergency Number', icon: Phone, placeholder: '911', accent: '#c0392b' },
                 { key: 'localHotline',      label: 'Local Station Hotline',     icon: Phone, placeholder: '(088) 856-FIRE' },
                 { key: 'email',             label: 'Email Address',             icon: Mail,  placeholder: 'station@bfp.gov.ph' },
-                { key: 'facebookPage',      label: 'Facebook Page URL',         icon: Globe, placeholder: 'facebook.com/BFPCogonStation' },
+                { key: 'facebookPage',      label: 'Facebook Page URL',         icon: Globe, placeholder: 'facebook.com/BFPBFP STATION 1A - BURGOSStation' },
                 { key: 'location',          label: 'Station Address',           icon: MapPin, placeholder: 'Street, Barangay, City' },
               ].map(({ key, label, icon: Icon, placeholder, accent }) => (
                 <div key={key}>

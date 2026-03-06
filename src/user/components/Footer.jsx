@@ -1,158 +1,163 @@
 import { Link } from 'react-router';
-import { MapPin, Phone, Mail, Flame, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, ExternalLink, Shield } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <footer style={{ fontFamily: "'Syne', sans-serif" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap');
-        .footer-link { font-size: 13px; color: #78716c; font-weight: 500; transition: color 0.15s; display: block; padding: 3px 0; }
-        .footer-link:hover { color: #c0392b; }
-        .footer-social-btn {
-          width: 36px; height: 36px; border-radius: 9px;
-          display: flex; align-items: center; justify-content: center;
-          background: #f5f0ed; border: 1.5px solid #ede8e5;
-          color: #78716c; transition: all 0.18s;
-        }
-        .footer-social-btn:hover { background: rgba(192,57,43,0.08); border-color: rgba(192,57,43,0.2); color: #c0392b; }
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap');
+        .ft-link { display: block; font-size: 13px; font-weight: 500; color: #4b1111; padding: 4px 0; transition: color 0.18s, padding-left 0.18s; text-decoration: none; }
+        .ft-link:hover { color: #b91c1c; padding-left: 6px; }
+        .ft-contact-item { display: flex; align-items: flex-start; gap: 12px; text-decoration: none; transition: opacity 0.18s; }
+        .ft-contact-item:hover { opacity: 0.78; }
+        .ft-maps-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 10px; font-size: 12px; font-weight: 700; text-decoration: none; letter-spacing: 0.04em; background: rgba(185,28,28,0.08); border: 1.5px solid rgba(185,28,28,0.2); color: #b91c1c; transition: all 0.2s; }
+        .ft-maps-btn:hover { background: rgba(185,28,28,0.14); border-color: rgba(185,28,28,0.35); transform: translateY(-1px); }
+        .ft-911-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 26px; border-radius: 12px; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: white; background: linear-gradient(135deg,#b91c1c,#dc2626); box-shadow: 0 4px 16px rgba(185,28,28,0.35); transition: all 0.2s; }
+        .ft-911-btn:hover { box-shadow: 0 8px 24px rgba(185,28,28,0.45); transform: translateY(-2px); }
       `}</style>
 
-      {/* Emergency Strip */}
-      <div style={{ background: 'linear-gradient(135deg, #c0392b, #e22f10)' }} className="py-5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
-                <Phone size={18} className="text-white" />
-              </div>
-              <div>
-                <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest">Fire Emergency Hotline</p>
-                <p className="text-white font-black text-xl leading-none" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.08em' }}>
-                  Call 911 — Available 24/7
-                </p>
-              </div>
+      {/* ── Emergency Strip ── */}
+      <div style={{
+        background: 'linear-gradient(135deg,#fff5f5,#fff0ee)',
+        borderTop: '3px solid transparent',
+        borderImage: 'linear-gradient(90deg,#b91c1c,#dc2626,#f97316,#dc2626,#b91c1c) 1',
+        padding: '20px 0',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 2rem', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#b91c1c,#dc2626)', boxShadow: '0 4px 14px rgba(185,28,28,0.35)', flexShrink: 0 }}>
+              <Phone size={20} color="white" />
             </div>
-            <a href="tel:911"
-              className="flex items-center gap-2 bg-white text-red-700 font-black text-sm uppercase tracking-widest px-6 py-2.5 rounded-xl shadow-lg hover:bg-orange-50 transition-all">
-              <Phone size={14} /> Dial 911 Now
-            </a>
+            <div>
+              <p style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#b91c1c', margin: '0 0 2px' }}>Fire Emergency Hotline</p>
+              <p style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.7rem', letterSpacing: '0.08em', color: '#1a0000', lineHeight: 1, margin: 0 }}>
+                Call 911 — Available 24/7
+              </p>
+            </div>
           </div>
+          <a href="tel:911" className="ft-911-btn">
+            <Phone size={15} /> Dial 911 Now
+          </a>
         </div>
       </div>
 
-      {/* Main Footer */}
-      <div style={{ background: '#fdf9f8', borderTop: '1.5px solid #f0e8e5' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+      {/* ── Main Footer ── */}
+      <div style={{
+        background: 'linear-gradient(180deg,#fff5f5 0%,#fff0ee 100%)',
+        borderTop: '1px solid rgba(185,28,28,0.1)',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 2rem 40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 40 }}>
 
             {/* Brand */}
-            <div className="md:col-span-1">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center overflow-hidden shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #aa2112 0%, #811515 60%, #ea1e0f 100%)' }}
-                >
-                  <img
-                    src="/CDO.jpg"
-                    alt="Cagayan de Oro City"
-                    className="w-full h-full object-cover"
-                  />
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#b91c1c,#dc2626)', boxShadow: '0 4px 12px rgba(185,28,28,0.3)', flexShrink: 0 }}>
+                  <span style={{ fontWeight: 900, color: 'white', fontSize: 11, letterSpacing: '0.04em' }}>BFP</span>
                 </div>
-
                 <div>
-                  <p className="font-black text-sm leading-tight"
-                    style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.07em', color: '#1c1917', fontSize: '1rem' }}>
-                    BFP Station 1
-                  </p>
-                  <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: '#c0392b' }}>Cogon, CDO</p>
+                  <p style={{ fontWeight: 800, fontSize: 14, color: '#1a0000', margin: 0 }}>BFP Station 1A</p>
+                  <p style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.16em', color: '#b91c1c', margin: 0, fontWeight: 700 }}>Burgos, CDO</p>
                 </div>
               </div>
-              <p className="text-xs leading-relaxed mb-4" style={{ color: '#78716c' }}>
-                Bureau of Fire Protection — Cogon Fire Station. Committed to protecting lives and property in Northern Mindanao.
+              <p style={{ fontSize: 12.5, lineHeight: 1.8, color: '#6b2222', maxWidth: 220 }}>
+                Bureau of Fire Protection — BFP Station 1A - Burgos Fire Station. Committed to protecting lives and property in Cagayan de Oro City.
               </p>
-              {/* Social */}
-              <div className="flex gap-2">
-                <a href="https://www.facebook.com/profile.php?id=61574576392850" target="_blank" rel="noopener noreferrer" className="footer-social-btn">
-                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </a>
-                <a href="cogonfs@gmail.com" className="footer-social-btn">
-                  <Mail size={15} />
-                </a>
-              </div>
+
+              {/* Decorative rule */}
+              <div style={{ marginTop: 20, width: 40, height: 2, borderRadius: 2, background: 'linear-gradient(90deg,#b91c1c,#f97316)' }} />
             </div>
 
             {/* Quick Links */}
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: '#c0392b' }}>Quick Links</p>
-              <div className="space-y-0.5">
+              <p style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#b91c1c', marginBottom: 18 }}>Quick Links</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {[
                   { to: '/', label: 'Home' },
                   { to: '/about', label: 'About Us' },
+                  { to: '/officers', label: 'Officers' },
                   { to: '/contact', label: 'Contact Us' },
                 ].map(({ to, label }) => (
-                  <Link key={to} to={to} className="footer-link">{label}</Link>
+                  <Link key={to} to={to} className="ft-link">{label}</Link>
                 ))}
               </div>
             </div>
 
             {/* Emergency Contacts */}
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: '#c0392b' }}>Emergency Contacts</p>
-              <div className="space-y-3">
-                {[
-                  { icon: Phone, label: 'National Emergency', value: '911', href: 'tel:911', accent: true },
-                  { icon: Phone, label: 'Local Hotline', value: '09267520623', href: 'tel:09267520623' },
-                  { icon: Mail, label: 'Email', value: 'cogonfs@gmail.com', href: 'mailto:cogonfs@gmail.com' },
-                ].map(({ icon: Icon, label, value, href, accent }) => (
-                  <a key={label} href={href}
-                    className="flex items-start gap-2.5 group"
-                    style={{ textDecoration: 'none' }}>
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-all group-hover:scale-105"
-                      style={{ background: accent ? 'rgba(192,57,43,0.1)' : '#f5f0ed', border: `1.5px solid ${accent ? 'rgba(192,57,43,0.2)' : '#ede8e5'}` }}>
-                      <Icon size={12} style={{ color: accent ? '#c0392b' : '#a8a29e' }} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#c4b5b0' }}>{label}</p>
-                      <p className="text-xs font-semibold group-hover:text-red-600 transition-colors" style={{ color: accent ? '#c0392b' : '#44403c' }}>{value}</p>
-                    </div>
-                  </a>
-                ))}
+              <p style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#b91c1c', marginBottom: 18 }}>Emergency Contacts</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+                <a href="tel:911" className="ft-contact-item">
+                  <div style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(185,28,28,0.1)', border: '1.5px solid rgba(185,28,28,0.2)', flexShrink: 0 }}>
+                    <Phone size={14} style={{ color: '#b91c1c' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 11, color: '#9b4444', margin: '0 0 1px', fontWeight: 500 }}>National Emergency</p>
+                    <p style={{ fontSize: 14, color: '#1a0000', fontWeight: 700, margin: 0 }}>911</p>
+                  </div>
+                </a>
+
+                <a href="tel:09267520623" className="ft-contact-item">
+                  <div style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(234,88,12,0.08)', border: '1.5px solid rgba(234,88,12,0.18)', flexShrink: 0 }}>
+                    <Phone size={14} style={{ color: '#ea580c' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 11, color: '#9b4444', margin: '0 0 1px', fontWeight: 500 }}>Local Hotline</p>
+                    <p style={{ fontSize: 13, color: '#1a0000', fontWeight: 700, margin: 0 }}>0926 752 0623</p>
+                  </div>
+                </a>
+
+                <a href="mailto:BFPSTATION1ABURGOSfs@gmail.com" className="ft-contact-item">
+                  <div style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(37,99,235,0.07)', border: '1.5px solid rgba(37,99,235,0.16)', flexShrink: 0 }}>
+                    <Mail size={14} style={{ color: '#2563eb' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 11, color: '#9b4444', margin: '0 0 1px', fontWeight: 500 }}>Email</p>
+                    <p style={{ fontSize: 11.5, color: '#1a0000', fontWeight: 600, margin: 0, wordBreak: 'break-all' }}>BFPSTATION1ABURGOSfs@gmail.com</p>
+                  </div>
+                </a>
+
               </div>
             </div>
 
             {/* Location */}
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: '#c0392b' }}>Station Location</p>
-              <div className="flex items-start gap-2.5 mb-4">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ background: 'rgba(192,57,43,0.08)', border: '1.5px solid rgba(192,57,43,0.18)' }}>
-                  <MapPin size={12} style={{ color: '#c0392b' }} />
+              <p style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#b91c1c', marginBottom: 18 }}>Station Location</p>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 18 }}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(185,28,28,0.1)', border: '1.5px solid rgba(185,28,28,0.2)', flexShrink: 0 }}>
+                  <MapPin size={14} style={{ color: '#b91c1c' }} />
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: '#57534e' }}>
-                  Capt. Vicente Roa, Brgy. 33,<br />Cagayan de Oro City,<br />Misamis Oriental
+                <p style={{ fontSize: 13, lineHeight: 1.75, color: '#4b1111', margin: 0 }}>
+                  Burgos Gomez St.,<br />
+                  Brgy. 7, Cagayan de Oro City,<br />
+                  Misamis Oriental
                 </p>
               </div>
-              <a href="https://www.google.com/maps/search/?api=1&query=BFP+Station+1+Cogon+Cagayan+de+Oro"
+
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=BFP+Station+1A+Burgos+Cagayan+de+Oro"
                 target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-all"
-                style={{ background: 'rgba(192,57,43,0.07)', border: '1.5px solid rgba(192,57,43,0.15)', color: '#c0392b' }}>
-                <ExternalLink size={11} /> Open in Maps
+                className="ft-maps-btn"
+              >
+                <ExternalLink size={13} /> Open in Maps
               </a>
             </div>
+
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div style={{ borderTop: '1px solid #ede8e5' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p className="text-[11px]" style={{ color: '#c4b5b0' }}>
-              © {new Date().getFullYear()} Bureau of Fire Protection — Cogon Fire Station. All rights reserved.
+        {/* Bottom Bar */}
+        <div style={{ borderTop: '1px solid rgba(185,28,28,0.12)', background: 'rgba(185,28,28,0.03)' }}>
+          <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 2rem', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+            <p style={{ fontSize: 11.5, color: '#9b4444', margin: 0 }}>
+              © {new Date().getFullYear()} Bureau of Fire Protection — BFP Station 1A - Burgos Fire Station.
             </p>
-            <p className="text-[11px]" style={{ color: '#d1c4be' }}>
-              Republic of the Philippines · DILG
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Shield size={12} style={{ color: '#b91c1c' }} />
+              <p style={{ fontSize: 11.5, color: '#b91c1c', margin: 0, fontWeight: 600 }}>Republic of the Philippines · DILG</p>
+            </div>
           </div>
         </div>
       </div>
