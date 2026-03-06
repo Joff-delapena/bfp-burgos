@@ -11,7 +11,7 @@ import {
 import bg from '/bg.jpg';
 import { WeeklyReportsSlideshow } from '../components/WeeklyReportsSlideshow';
 
-// ─── Design Tokens (Doc 1 palette) ────────────────────────────────────────────
+// ─── Design Tokens ─────────────────────────────────────────────────────────────
 const D = {
   dark:   '#080504',
   dark1:  '#120a07',
@@ -34,7 +34,6 @@ const CATEGORY_CONFIG = {
 };
 const getCfg = (cat) =>
   CATEGORY_CONFIG[cat] || { color: '#78716c', bg: '#fafaf9', border: '#e7e5e4', emoji: '📄' };
-
 const getCategoryBg = (cat) => getCfg(cat).color;
 
 const formatDate = (date) => {
@@ -54,7 +53,7 @@ function getImages(r) {
   return [];
 }
 
-// ─── Birthday helpers ─────────────────────────────────────────────────────────
+// ─── Birthday helpers ──────────────────────────────────────────────────────────
 const RANKS = {
   'Chief Fire Officer':'CFO','Chief Fire Inspector':'CFI',
   'Senior Fire Inspector':'SFInsp','Fire Inspector':'FInsp',
@@ -74,7 +73,7 @@ const getAge = (s) => {
   } catch { return null; }
 };
 
-// ─── Confetti ─────────────────────────────────────────────────────────────────
+// ─── Confetti ──────────────────────────────────────────────────────────────────
 const CONF_C = ['#FDE68A','#F472B6','#DB2777','#FBCFE8','#ffffff','#FCA5A5','#A78BFA'];
 function BirthdayConfetti({ active }) {
   const cv = useRef(null), raf = useRef(null), ps = useRef([]);
@@ -95,7 +94,7 @@ function BirthdayConfetti({ active }) {
   return <canvas ref={cv} style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:5 }} />;
 }
 
-// ─── Birthday Featured Slide ──────────────────────────────────────────────────
+// ─── Birthday Featured Slide ───────────────────────────────────────────────────
 function BirthdayFeaturedSlide({ officer }) {
   const abbr = RANKS[officer.rank] || officer.rank || '';
   const age  = getAge(officer.birthdate);
@@ -104,74 +103,76 @@ function BirthdayFeaturedSlide({ officer }) {
   useEffect(()=>{ setConf(true); const t=setTimeout(()=>setConf(false),6000); return()=>clearTimeout(t); },[officer.id]);
 
   return (
-    <div style={{ position:'absolute', inset:0, overflow:'hidden', display:'flex' }}>
+    <div className="bday-slide" style={{ position:'absolute', inset:0, overflow:'hidden', display:'flex' }}>
       <BirthdayConfetti active={conf}/>
-      <div style={{ flex:'0 0 55%', position:'relative', background:D.dark, overflow:'hidden' }}>
+      {/* Photo panel */}
+      <div className="bday-photo-panel" style={{ flex:'0 0 45%', position:'relative', background:D.dark, overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at center 80%, rgba(220,60,30,0.22) 0%, rgba(8,5,4,0) 70%)', zIndex:1, pointerEvents:'none' }}/>
         {officer.profileImage ? (
           <img src={officer.profileImage} alt={officer.fullName}
             style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'contain', objectPosition:'center bottom', display:'block', zIndex:2 }} />
         ) : (
           <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', zIndex:2 }}>
-            <span style={{ fontFamily:"'Anton',sans-serif", fontSize:'clamp(8rem,15vw,13rem)', fontWeight:900, color:'rgba(255,255,255,0.05)', letterSpacing:'.02em', userSelect:'none', lineHeight:1 }}>{ini}</span>
+            <span style={{ fontFamily:"'Anton',sans-serif", fontSize:'clamp(5rem,12vw,13rem)', fontWeight:900, color:'rgba(255,255,255,0.05)', letterSpacing:'.02em', userSelect:'none', lineHeight:1 }}>{ini}</span>
           </div>
         )}
-        <div style={{ position:'absolute', top:0, right:0, bottom:0, width:60, background:`linear-gradient(to right, transparent, ${D.dark})`, zIndex:3, pointerEvents:'none' }}/>
+        <div style={{ position:'absolute', top:0, right:0, bottom:0, width:40, background:`linear-gradient(to right, transparent, ${D.dark})`, zIndex:3, pointerEvents:'none' }}/>
       </div>
 
-      <div style={{ flex:1, background:D.dark, display:'flex', flexDirection:'column', justifyContent:'center', padding:'40px 44px 40px 32px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', right:'-10px', bottom:'-20px', fontFamily:"'Anton',sans-serif", fontSize:'clamp(7rem,12vw,10rem)', fontWeight:900, color:'rgba(255,255,255,0.03)', letterSpacing:'.02em', userSelect:'none', pointerEvents:'none', lineHeight:1 }}>{ini}</div>
+      {/* Text panel */}
+      <div className="bday-text-panel" style={{ flex:1, background:D.dark, display:'flex', flexDirection:'column', justifyContent:'center', padding:'24px 20px 24px 16px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', right:'-10px', bottom:'-20px', fontFamily:"'Anton',sans-serif", fontSize:'clamp(5rem,10vw,10rem)', fontWeight:900, color:'rgba(255,255,255,0.03)', letterSpacing:'.02em', userSelect:'none', pointerEvents:'none', lineHeight:1 }}>{ini}</div>
         <div style={{ position:'absolute', top:0, left:0, right:0, height:3, background:'linear-gradient(90deg, #FBBF24 0%, #FDE68A 50%, #F59E0B 100%)' }}/>
-        <div style={{ position:'absolute', top:18, right:20, display:'flex', gap:10, zIndex:4 }}>
-          <span style={{ fontSize:28, filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))', animation:'bday-float 3s ease-in-out infinite' }}>🎂</span>
-          <span style={{ fontSize:22, animation:'bday-float 3.4s ease-in-out infinite .5s' }}>🎉</span>
-          <span style={{ fontSize:18, animation:'bday-float 2.8s ease-in-out infinite 1s' }}>🎈</span>
+        <div style={{ position:'absolute', top:12, right:14, display:'flex', gap:8, zIndex:4 }}>
+          <span style={{ fontSize:22, filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))', animation:'bday-float 3s ease-in-out infinite' }}>🎂</span>
+          <span style={{ fontSize:18, animation:'bday-float 3.4s ease-in-out infinite .5s' }}>🎉</span>
         </div>
-        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20, flexWrap:'wrap' }}>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'4px 12px 4px 9px', borderRadius:999, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)' }}>
-            <span style={{ fontSize:13 }}>🎂</span>
-            <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:10, letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)' }}>Birthday Celebrant</span>
+
+        <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:10, flexWrap:'wrap' }}>
+          <div style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'3px 10px 3px 7px', borderRadius:999, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)' }}>
+            <span style={{ fontSize:11 }}>🎂</span>
+            <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:9, letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)' }}>Birthday Celebrant</span>
           </div>
           {abbr && (
-            <div style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'4px 12px', borderRadius:999, background:'rgba(251,191,36,0.12)', border:'1px solid rgba(251,191,36,0.35)' }}>
-              <Shield size={9} style={{ color:'#FBBF24' }}/>
-              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:900, fontSize:11, letterSpacing:'.16em', textTransform:'uppercase', color:'#FDE68A' }}>{abbr}</span>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:4, padding:'3px 9px', borderRadius:999, background:'rgba(251,191,36,0.12)', border:'1px solid rgba(251,191,36,0.35)' }}>
+              <Shield size={8} style={{ color:'#FBBF24' }}/>
+              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:900, fontSize:10, letterSpacing:'.14em', textTransform:'uppercase', color:'#FDE68A' }}>{abbr}</span>
             </div>
           )}
           {age !== null && (
-            <div style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'4px 12px', borderRadius:999, background:'rgba(244,114,182,0.1)', border:'1px solid rgba(244,114,182,0.25)' }}>
-              <span style={{ fontSize:11 }}>🎈</span>
-              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:11, letterSpacing:'.14em', textTransform:'uppercase', color:'#F9A8D4' }}>Turning {age}</span>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:4, padding:'3px 9px', borderRadius:999, background:'rgba(244,114,182,0.1)', border:'1px solid rgba(244,114,182,0.25)' }}>
+              <span style={{ fontSize:10 }}>🎈</span>
+              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', color:'#F9A8D4' }}>Turning {age}</span>
             </div>
           )}
         </div>
-        <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'clamp(0.9rem,1.6vw,1.3rem)', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(255,255,255,0.45)', marginBottom:6 }}>
+
+        <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'clamp(0.65rem,1.4vw,1.1rem)', letterSpacing:'.24em', textTransform:'uppercase', color:'rgba(255,255,255,0.45)', marginBottom:4 }}>
           ✨ Happy Birthday
         </p>
-        <h3 style={{ fontFamily:"'Anton',sans-serif", fontSize:'clamp(2rem,4vw,3.8rem)', letterSpacing:'.04em', lineHeight:0.95, marginBottom:14,
+        <h3 style={{ fontFamily:"'Anton',sans-serif", fontSize:'clamp(1.4rem,3.5vw,3.8rem)', letterSpacing:'.04em', lineHeight:0.95, marginBottom:10,
           background:'linear-gradient(90deg, #fff 0%, #FDE68A 35%, #FBBF24 65%, #F59E0B 100%)',
           WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
           filter:'drop-shadow(0 2px 16px rgba(251,191,36,0.4))'
-        }}>
-          {officer.fullName}
-        </h3>
+        }}>{officer.fullName}</h3>
+
         {officer.rank && (
-          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20 }}>
-            <div style={{ width:3, height:30, borderRadius:2, background:'linear-gradient(to bottom,#FBBF24,#F472B6)', flexShrink:0 }}/>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+            <div style={{ width:3, height:24, borderRadius:2, background:'linear-gradient(to bottom,#FBBF24,#F472B6)', flexShrink:0 }}/>
             <div>
-              <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, fontWeight:700, letterSpacing:'.24em', textTransform:'uppercase', color:'rgba(255,255,255,0.3)', marginBottom:2 }}>Rank</p>
-              <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.85)', lineHeight:1 }}>{officer.rank}</p>
+              <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:8, fontWeight:700, letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(255,255,255,0.3)', marginBottom:1 }}>Rank</p>
+              <p style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.85)', lineHeight:1 }}>{officer.rank}</p>
             </div>
           </div>
         )}
-        <div style={{ height:1, background:'rgba(255,255,255,0.07)', marginBottom:18 }}/>
-        <p style={{ fontFamily:"'Barlow',sans-serif", fontStyle:'italic', fontSize:13.5, color:'rgba(255,255,255,0.4)', lineHeight:1.8 }}>
+        <div style={{ height:1, background:'rgba(255,255,255,0.07)', marginBottom:10 }}/>
+        <p className="bday-msg" style={{ fontFamily:"'Barlow',sans-serif", fontStyle:'italic', fontSize:13.5, color:'rgba(255,255,255,0.4)', lineHeight:1.8 }}>
           On behalf of all officers and personnel of BFP Station 1A – burgos, we extend our warmest felicitations and deepest gratitude for your unwavering dedication and service.
         </p>
-        <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:22 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:7, marginTop:14 }}>
           <Shield size={12} style={{ color:'rgba(255,255,255,0.2)', flexShrink:0 }}/>
           <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:10, fontWeight:700, letterSpacing:'.16em', textTransform:'uppercase', color:'rgba(255,255,255,0.2)' }}>
-            BFP Station 1A · burgos  · CDO
+            BFP Station 1A · burgos · CDO
           </span>
         </div>
       </div>
@@ -179,7 +180,7 @@ function BirthdayFeaturedSlide({ officer }) {
   );
 }
 
-// ─── Slideshow Portal ─────────────────────────────────────────────────────────
+// ─── Slideshow Portal ──────────────────────────────────────────────────────────
 function SlideshowPortal({ open, onClose, reports, jumpToReportRef }) {
   if (!open) return null;
   return createPortal(
@@ -188,7 +189,7 @@ function SlideshowPortal({ open, onClose, reports, jumpToReportRef }) {
         <WeeklyReportsSlideshow reports={reports} onRegisterJump={fn => { jumpToReportRef.current = fn; }} />
       </div>
       <button type="button" onClick={onClose}
-        style={{ position: 'fixed', top: 18, right: 22, zIndex: 100001, display: 'flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 6, background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(14px)', border: '1px solid rgba(220,60,30,0.22)', color: D.dark2, cursor: 'pointer', fontSize: 13, fontWeight: 700, fontFamily: "'Barlow Condensed',sans-serif", letterSpacing: '.1em', textTransform: 'uppercase', boxShadow: '0 4px 24px rgba(0,0,0,.14)', transition: 'all .22s' }}
+        style={{ position: 'fixed', top: 18, right: 16, zIndex: 100001, display: 'flex', alignItems: 'center', gap: 7, padding: '10px 18px', borderRadius: 6, background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(14px)', border: '1px solid rgba(220,60,30,0.22)', color: D.dark2, cursor: 'pointer', fontSize: 13, fontWeight: 700, fontFamily: "'Barlow Condensed',sans-serif", letterSpacing: '.1em', textTransform: 'uppercase', boxShadow: '0 4px 24px rgba(0,0,0,.14)', transition: 'all .22s' }}
         onMouseEnter={e => { e.currentTarget.style.background = D.red; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'transparent'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.92)'; e.currentTarget.style.color = D.dark2; e.currentTarget.style.borderColor = 'rgba(220,60,30,0.22)'; }}
       >
@@ -199,146 +200,11 @@ function SlideshowPortal({ open, onClose, reports, jumpToReportRef }) {
   );
 }
 
-// ─── Report Card (unused — Doc 2 inline cards used instead) ──────────────────
-function _ReportCard({ report, onCardClick }) {
-  const [imgIdx, setImgIdx]   = useState(0);
-  const [hovered, setHovered] = useState(false);
-  const images = getImages(report);
-  const cfg    = getCfg(report.category);
+// ─── Unused stubs (kept for reference) ────────────────────────────────────────
+function _ReportCard() { return null; }
+function _ReportsCarousel() { return null; }
 
-  return (
-    <div className="hm-report-card"
-      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: 'white', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(220,60,30,0.1)', boxShadow: hovered ? '0 28px 72px rgba(220,60,30,0.14), 0 0 0 1px rgba(220,60,30,0.18)' : '0 2px 16px rgba(0,0,0,0.07)', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease', transform: hovered ? 'translateY(-10px)' : 'translateY(0)', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
-
-      {/* Image area */}
-      <div style={{ position: 'relative', height: 210, overflow: 'hidden', flexShrink: 0, background: cfg.bg, cursor: 'pointer' }}
-        onClick={() => onCardClick && onCardClick(report.id)}>
-        {images.length > 0 ? (
-          <img src={images[imgIdx]} alt={report.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease', transform: hovered ? 'scale(1.07)' : 'scale(1)' }} />
-        ) : (
-          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 44, opacity: 0.25 }}>{cfg.emoji}</div>
-        )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.04) 50%, transparent 100%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: 12, left: 12, pointerEvents: 'none' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 12px', borderRadius: 4, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: cfg.color, boxShadow: '0 2px 8px rgba(0,0,0,0.14)' }}>
-            {cfg.emoji} {report.category}
-          </span>
-        </div>
-        {images.length > 1 && (
-          <div style={{ position: 'absolute', top: 12, right: 12, pointerEvents: 'none' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 4, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', fontFamily: "'Barlow Condensed',sans-serif", fontSize: 9, fontWeight: 700, color: 'white' }}>
-              <ImageIcon size={9} /> {images.length}
-            </span>
-          </div>
-        )}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 14px 12px', pointerEvents: 'none' }}>
-          <h3 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, letterSpacing: '0.03em', color: 'white', lineHeight: 1.25, margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
-            {report.title}
-          </h3>
-        </div>
-        {/* Hover overlay */}
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: hovered ? 1 : 0, transition: 'opacity 0.22s', pointerEvents: 'none' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-            <div style={{ width: 50, height: 50, borderRadius: '50%', background: 'rgba(220,60,30,0.88)', backdropFilter: 'blur(12px)', border: '2px solid rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 24px rgba(220,60,30,0.55)' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="8,21 12,17 16,21"/></svg>
-            </div>
-            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, fontWeight: 700, color: 'white', letterSpacing: '0.14em', textTransform: 'uppercase', background: 'rgba(0,0,0,0.58)', backdropFilter: 'blur(6px)', padding: '3px 12px', borderRadius: 4 }}>View Slideshow</span>
-          </div>
-        </div>
-        {images.length > 1 && (
-          <div style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 4, zIndex: 2 }}>
-            {images.slice(0,5).map((_,i) => <button key={i} type="button" onClick={e => { e.stopPropagation(); setImgIdx(i); }} style={{ width: i===imgIdx?14:5, height: 5, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: i===imgIdx?'white':'rgba(255,255,255,0.45)', transition: 'all 0.2s', flexShrink: 0 }} />)}
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div style={{ padding: '14px 16px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 8, cursor: 'pointer' }}
-        onClick={() => onCardClick && onCardClick(report.id)}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <Calendar size={11} style={{ color: D.red }} />
-          <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', color: D.stone2 }}>{formatDateShort(report.date)}</span>
-          <span style={{ marginLeft: 'auto', fontFamily: "'Barlow Condensed',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: D.red, background: 'rgba(220,60,30,0.07)', padding: '2px 9px', borderRadius: 4 }}>BFP Burgos</span>
-        </div>
-        <p style={{ fontFamily: "'Barlow',sans-serif", fontSize: 12, color: D.stone, lineHeight: 1.78, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, flex: 1 }}>{report.description}</p>
-        {images.length > 1 ? (
-          <button type="button" onClick={e => { e.stopPropagation(); onCardClick && onCardClick(report.id); }}
-            style={{ marginTop: 4, width: '100%', padding: '10px 0', borderRadius: 8, background: `linear-gradient(135deg, ${D.redDk} 0%, ${D.red} 60%, ${D.redLt} 100%)`, color: 'white', border: 'none', fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, boxShadow: '0 4px 18px rgba(220,60,30,0.32)', transition: 'opacity 0.18s' }}
-            onMouseEnter={e => e.currentTarget.style.opacity='0.88'} onMouseLeave={e => e.currentTarget.style.opacity='1'}>
-            <ImageIcon size={11} /> View {images.length} Photos
-          </button>
-        ) : (
-          <div style={{ marginTop: 4, width: '100%', padding: '9px 0', borderRadius: 8, background: 'rgba(220,60,30,0.05)', border: '1.5px dashed rgba(220,60,30,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#dc3c1e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="8,21 12,17 16,21"/></svg>
-            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: D.red }}>View in Slideshow</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ─── Reports Carousel (unused — Doc 2 paginated grid used instead) ────────────
-function _ReportsCarousel({ reports, onCardClick }) {
-  const VISIBLE = 3;
-  const [offset, setOffset]       = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const autoRef = useRef(null);
-  const total    = reports.length;
-  const canCycle = total > VISIBLE;
-
-  const advance = useCallback((dir) => setOffset(o => ((o + dir) % total + total) % total), [total]);
-
-  useEffect(() => {
-    if (!isPlaying || !canCycle) return;
-    autoRef.current = setInterval(() => advance(1), 30000);
-    return () => clearInterval(autoRef.current);
-  }, [isPlaying, canCycle, advance]);
-
-  const pauseAndResume = (dir) => { clearInterval(autoRef.current); setIsPlaying(false); advance(dir); setTimeout(() => setIsPlaying(true), 8000); };
-  const visible = Array.from({ length: Math.min(VISIBLE, total) }, (_, i) => reports[(offset + i) % total]);
-  if (total === 0) return null;
-
-  if (!canCycle) return (
-    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${total}, 1fr)`, gap: 22 }}>
-      {reports.map(r => <ReportCard key={r.id} report={r} onCardClick={onCardClick} />)}
-    </div>
-  );
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <button type="button" onClick={() => pauseAndResume(-1)} className="hm-carousel-arr"
-        style={{ position: 'absolute', left: -22, top: '42%', transform: 'translateY(-50%)', zIndex: 20, width: 46, height: 46, borderRadius: 23, background: 'white', border: '1.5px solid rgba(220,60,30,0.2)', color: D.red, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 22px rgba(220,60,30,0.15)', transition: 'all 0.22s' }}>
-        <ChevronLeft size={18} />
-      </button>
-      <div className="hm-carousel-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22 }}>
-        {visible.map((r, i) => (
-          <div key={`${r.id}-${offset}-${i}`} style={{ animation: `hm-cardIn 0.42s cubic-bezier(0.22,1,0.36,1) both`, animationDelay: `${i * 60}ms` }}>
-            <ReportCard report={r} onCardClick={onCardClick} />
-          </div>
-        ))}
-      </div>
-      <button type="button" onClick={() => pauseAndResume(1)} className="hm-carousel-arr"
-        style={{ position: 'absolute', right: -22, top: '42%', transform: 'translateY(-50%)', zIndex: 20, width: 46, height: 46, borderRadius: 23, background: 'white', border: '1.5px solid rgba(220,60,30,0.2)', color: D.red, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 22px rgba(220,60,30,0.15)', transition: 'all 0.22s' }}>
-        <ChevronRight size={18} />
-      </button>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 30 }}>
-        {reports.map((_, i) => {
-          const inView = visible.some(r => r.id === reports[i].id);
-          return <button key={i} type="button" onClick={() => { clearInterval(autoRef.current); setOffset(i); setIsPlaying(false); setTimeout(() => setIsPlaying(true), 8000); }}
-            style={{ width: inView ? 22 : 7, height: 7, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: inView ? D.red : 'rgba(220,60,30,0.18)', boxShadow: inView ? '0 0 14px rgba(220,60,30,0.5)' : 'none', transition: 'all 0.28s cubic-bezier(0.34,1.56,0.64,1)', flexShrink: 0 }} />;
-        })}
-      </div>
-      <p style={{ textAlign: 'center', marginTop: 10, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, color: D.stone2, fontWeight: 600, letterSpacing: '0.1em' }}>
-        Showing {Math.min(VISIBLE, total)} of {total} reports
-      </p>
-    </div>
-  );
-}
-
-// ─── HomePage ─────────────────────────────────────────────────────────────────
+// ─── HomePage ──────────────────────────────────────────────────────────────────
 export function HomePage() {
   const [allReports,    setAllReports]    = useState([]);
   const [bdayOfficers,  setBdayOfficers]  = useState([]);
@@ -431,7 +297,7 @@ export function HomePage() {
         #home-root .hm-svc-card:hover { transform:translateY(-8px); box-shadow:0 24px 56px rgba(220,60,30,0.12), 0 0 0 1px rgba(220,60,30,0.18); }
         #home-root .hm-svc-card:hover::after { transform:scaleX(1); }
 
-        #home-root .hm-carousel-arr:hover { background:linear-gradient(135deg,#8b1a0e,#dc3c1e) !important; color:white !important; border-color:transparent !important; box-shadow:0 8px 28px rgba(220,60,30,0.42) !important; }
+        #home-root .hm-carousel-arr:hover { background:linear-gradient(135deg,#8b1a0e,#dc3c1e) !important; color:white !important; border-color:transparent !important; }
 
         #home-root .hm-ember { position:absolute; border-radius:50%; pointer-events:none; animation:hm-ember linear infinite; }
         #home-root .hm-scanline { position:absolute; left:0; right:0; height:80px; pointer-events:none; background:linear-gradient(to bottom,transparent,rgba(220,60,30,0.03),transparent); animation:hm-scanline 7s linear infinite; }
@@ -445,24 +311,90 @@ export function HomePage() {
         #home-root .rpt-img { transition: transform .5s ease; }
         #home-root .hp-cards-grid { display: grid; }
 
+        /* ── FEATURED HERO height ── */
+        #home-root .feat-hero-box { position:relative; height:600px; overflow:hidden; }
+
+        /* ── BIRTHDAY slide: desktop side-by-side ── */
+        #home-root .bday-slide { flex-direction: row; }
+        #home-root .bday-photo-panel { flex: 0 0 45%; }
+
+        /* ═══════════════════════════════════════
+           TABLET  ≤ 900px
+        ═══════════════════════════════════════ */
         @media (max-width:900px) {
-          #home-root .hm-svc-grid      { grid-template-columns:1fr 1fr !important; }
+          #home-root .hm-svc-grid       { grid-template-columns:1fr 1fr !important; }
           #home-root .hm-carousel-grid  { grid-template-columns:1fr 1fr !important; }
-          #home-root .hp-cards-grid    { grid-template-columns:repeat(2,1fr) !important; }
-          #home-root .hm-hero-content  { padding:0 1.5rem 7rem !important; padding-top:8rem !important; }
-          #home-root .hm-cta-inner     { flex-direction:column !important; align-items:flex-start !important; }
-          #home-root .hm-cta-stats     { border-left:none !important; border-top:1px solid rgba(255,255,255,0.08) !important; padding-top:16px !important; margin-top:8px !important; }
-          #home-root .hm-carousel-arr  { display:none !important; }
-          #home-root .hm-carousel-wrap { padding:0 !important; }
+          #home-root .hp-cards-grid     { grid-template-columns:repeat(2,1fr) !important; }
+          #home-root .hm-hero-content   { padding:0 1.5rem 7rem !important; padding-top:8rem !important; }
+          #home-root .hm-cta-inner      { flex-direction:column !important; align-items:flex-start !important; }
+          #home-root .hm-cta-stats      { border-left:none !important; border-top:1px solid rgba(255,255,255,0.08) !important; padding-top:16px !important; margin-top:8px !important; }
+          #home-root .hm-carousel-arr   { display:none !important; }
+          #home-root .hm-carousel-wrap  { padding:0 !important; }
+          #home-root .feat-hero-box     { height:460px !important; }
+          #home-root .weekly-section-pad { padding:64px 1.5rem 80px !important; }
         }
+
+        /* ═══════════════════════════════════════
+           MOBILE  ≤ 640px
+        ═══════════════════════════════════════ */
         @media (max-width:640px) {
-          #home-root .hm-svc-grid      { grid-template-columns:1fr !important; }
+          /* Grids → single column */
+          #home-root .hm-svc-grid       { grid-template-columns:1fr !important; }
           #home-root .hm-carousel-grid  { grid-template-columns:1fr !important; }
-          #home-root .hp-cards-grid    { grid-template-columns:1fr !important; }
-          #home-root .hm-hero-btns     { flex-direction:column !important; }
-          #home-root .hm-reports-header { flex-direction:column !important; align-items:flex-start !important; }
-          #home-root .hm-hero-stats    { flex-direction:column !important; gap:12px !important; }
-          #home-root .hm-hero-stats > div { border-left:none !important; border-top:1px solid rgba(255,255,255,0.08) !important; padding-left:0 !important; padding-top:12px !important; }
+          #home-root .hp-cards-grid     { grid-template-columns:1fr !important; }
+
+          /* Hero section */
+          #home-root .hm-hero-content   { padding:0 1rem 5rem !important; padding-top:6rem !important; }
+          #home-root .hm-hero-btns      { flex-direction:column !important; }
+          #home-root .hm-hero-btns a,
+          #home-root .hm-hero-btns button { width:100% !important; justify-content:center !important; text-align:center !important; }
+
+          /* Hero stats: 2×2 grid */
+          #home-root .hm-hero-stats     { display:grid !important; grid-template-columns:1fr 1fr !important; gap:0 !important; }
+          #home-root .hm-hero-stats > div {
+            border-left: none !important;
+            border-top: 1px solid rgba(255,255,255,0.08) !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-top: 14px !important;
+          }
+
+          /* Featured hero */
+          #home-root .feat-hero-box     { height:auto !important; min-height:320px !important; }
+
+          /* Birthday slide: stack vertically on mobile */
+          #home-root .bday-slide        { flex-direction:column !important; }
+          #home-root .bday-photo-panel  { flex:0 0 auto !important; height:200px !important; width:100% !important; }
+          #home-root .bday-text-panel   { flex:1 !important; padding:16px 16px 20px !important; justify-content:flex-start !important; }
+          #home-root .bday-msg          { display:none !important; }
+
+          /* Report featured slide content */
+          #home-root .feat-rpt-content  { padding:20px 18px !important; }
+          #home-root .feat-rpt-title    { font-size:clamp(1.5rem,5vw,2.4rem) !important; }
+
+          /* Reports grid header */
+          #home-root .rpt-grid-header   { flex-direction:column !important; align-items:flex-start !important; gap:12px !important; }
+
+          /* CTA banner */
+          #home-root .hm-cta-inner      { padding:24px 20px !important; }
+          #home-root .hm-cta-icon       { display:none !important; }
+          #home-root .hm-cta-stats      { width:100% !important; justify-content:space-between !important; }
+
+          /* Section padding */
+          #home-root .weekly-section-pad { padding:48px 1rem 64px !important; }
+          #home-root .services-section-pad { padding:0 1rem !important; padding-top:64px !important; padding-bottom:80px !important; }
+
+          /* Featured card border radius */
+          #home-root .featured-card     { border-radius:12px !important; }
+        }
+
+        /* ═══════════════════════════════════════
+           SMALL MOBILE  ≤ 400px
+        ═══════════════════════════════════════ */
+        @media (max-width:400px) {
+          #home-root .bday-photo-panel  { height:160px !important; }
+          #home-root .hm-hero-stats     { grid-template-columns:1fr !important; }
+          #home-root .hm-hero-stats > div { padding-right:0 !important; }
         }
       `}</style>
 
@@ -478,26 +410,14 @@ export function HomePage() {
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '38%', background: `linear-gradient(to top, ${D.dark}, transparent)` }} />
         </div>
 
-        {/* Scanline */}
         <div className="hm-scanline" />
-
-        {/* Grid overlay */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.035, backgroundImage: 'linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px)', backgroundSize: '44px 44px' }} />
-
-        {/* Left stripe */}
         <div style={{ position: 'absolute', top: 0, left: 0, width: 5, height: '100%', background: `linear-gradient(to bottom, ${D.red} 0%, ${D.redLt} 45%, transparent 100%)`, zIndex: 5 }} />
-
-        {/* Top bar */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${D.redDk} 0%, ${D.red} 45%, rgba(220,60,30,0.15) 100%)`, zIndex: 5 }} />
-
-        {/* Diagonal accent lines */}
         <div style={{ position: 'absolute', top: '30%', left: 0, width: '40%', height: '1px', background: `linear-gradient(90deg, rgba(220,60,30,0.7), rgba(220,60,30,0.05))`, transform: 'rotate(-2.5deg)', transformOrigin: 'left', animation: 'hm-linegrow 1.4s cubic-bezier(0.16,1,0.3,1) 0.9s both', zIndex: 3 }} />
         <div style={{ position: 'absolute', top: '34%', left: 0, width: '28%', height: '1px', background: `linear-gradient(90deg, rgba(220,60,30,0.35), rgba(220,60,30,0.02))`, transform: 'rotate(-2.5deg)', transformOrigin: 'left', animation: 'hm-linegrow 1.4s cubic-bezier(0.16,1,0.3,1) 1.1s both', zIndex: 3 }} />
-
-        {/* Red glow orb */}
         <div style={{ position: 'absolute', top: '5%', left: '-15%', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,30,10,0.18) 0%, transparent 65%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
 
-        {/* Embers */}
         {[{ left: '63%', size: 5, dur: '4.4s', delay: '0s' }, { left: '75%', size: 3, dur: '6.2s', delay: '1.3s' }, { left: '83%', size: 6, dur: '5.0s', delay: '0.7s' }, { left: '91%', size: 4, dur: '7.0s', delay: '2.0s' }, { left: '70%', size: 3, dur: '5.6s', delay: '0.4s' }].map((e, i) => (
           <div key={i} className="hm-ember" style={{ left: e.left, bottom: '8%', width: e.size, height: e.size, background: '#ff6030', boxShadow: `0 0 ${e.size * 3}px #ff6030`, animationDuration: e.dur, animationDelay: e.delay }} />
         ))}
@@ -517,29 +437,27 @@ export function HomePage() {
             </div>
           </div>
 
-          {/* Pre-title line */}
+          {/* Title */}
           <div className="hm-f2" style={{ marginBottom: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
               <div style={{ width: 30, height: 3, background: D.red }} />
               <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: '0.34em', textTransform: 'uppercase', color: D.red }}>Bureau of Fire Protection · Region X</span>
             </div>
-            <h1 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(4.5rem,13vw,9.5rem)', letterSpacing: '0.02em', lineHeight: 0.86, color: 'white', margin: 0 }}>
-              BURGOS
-            </h1>
+            <h1 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(4.5rem,13vw,9.5rem)', letterSpacing: '0.02em', lineHeight: 0.86, color: 'white', margin: 0 }}>BURGOS</h1>
           </div>
 
-          {/* Outline sub-title */}
+          {/* Sub-title */}
           <div className="hm-f3" style={{ marginBottom: 22 }}>
             <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: "1.5px rgba(220,60,30,0.8)", color: 'transparent', margin: 0, marginBottom: 16 }}>
               FIRE SUB-STATION 1A
             </h2>
-            <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: `1.5px rgba(220,60,30,0.8)`, color: 'darkorange', margin: 0, marginBottom: 16,  position: 'relative' }}>
+            <h2 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(1.6rem,4vw,3.4rem)', letterSpacing: '0.04em', lineHeight: 1, WebkitTextStroke: `1.5px rgba(220,60,30,0.8)`, color: 'darkorange', margin: 0, marginBottom: 16, position: 'relative' }}>
               (ENGINE - 7)
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 18, height: 1.5, background: 'rgba(220,60,30,0.45)', flexShrink: 0 }} />
               <p style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.46)', margin: 0 }}>
-                 Burgos-Gomez St. Brgy., Cagayan de Oro City
+                Burgos-Gomez St. Brgy., Cagayan de Oro City
               </p>
             </div>
           </div>
@@ -588,7 +506,7 @@ export function HomePage() {
           <ChevronDown size={30} style={{ color: 'rgba(255,255,255,0.2)' }} />
         </div>
 
-        {/* Wave to cream */}
+        {/* Wave */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 80, overflow: 'hidden', zIndex: 4 }}>
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }} preserveAspectRatio="none">
             <path d="M0,48 C240,80 480,16 720,48 C960,80 1200,16 1440,48 L1440,80 L0,80 Z" fill="#f5f0eb"/>
@@ -598,7 +516,7 @@ export function HomePage() {
 
       {/* ══ WEEKLY UPDATES ══ */}
       <section style={{ background: D.cream, borderTop: `1px solid #e5ddd5` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 2.5rem 96px' }}>
+        <div className="weekly-section-pad" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 2.5rem 96px' }}>
 
           {/* Section header */}
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -613,19 +531,16 @@ export function HomePage() {
             </p>
           </div>
 
-          {/* Featured hero slideshow */}
           {featuredSlides.length > 0 ? (
             <>
-              {/* ── FEATURED HERO ── */}
-              <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,0.18)', background: '#111827', marginBottom: 48 }}>
-                <div style={{ position: 'relative', height: 600, overflow: 'hidden' }}>
+              {/* Featured hero */}
+              <div className="featured-card" style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,0.18)', background: '#111827', marginBottom: 48 }}>
+                <div className="feat-hero-box">
 
-                  {/* Birthday slide */}
                   {isBdaySlide && (
                     <BirthdayFeaturedSlide key={featured.id} officer={featured.officer} />
                   )}
 
-                  {/* Report slide */}
                   {!isBdaySlide && featured?.report && (() => {
                     const imgs = getImages(featured.report);
                     const cfg  = getCfg(featured.report.category);
@@ -640,14 +555,14 @@ export function HomePage() {
                           </div>
                         )}
                         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, transparent 100%)' }} />
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px 48px', color: 'white' }}>
+                        <div className="feat-rpt-content" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px 48px', color: 'white' }}>
                           <div style={{ maxWidth: 760 }}>
                             <div style={{ marginBottom: 16 }}>
                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '6px 16px', borderRadius: 6, background: getCategoryBg(featured.report.category), color: 'white', fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, fontSize: 12, letterSpacing: '.18em', textTransform: 'uppercase' }}>
                                 <Tag size={12} /> {featured.report.category}
                               </span>
                             </div>
-                            <h3 style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(2.2rem,5vw,4.2rem)', letterSpacing: '.04em', lineHeight: 1.0, marginBottom: 14, textShadow: '0 2px 20px rgba(0,0,0,0.8)', color: 'white' }}>
+                            <h3 className="feat-rpt-title" style={{ fontFamily: "'Anton',sans-serif", fontSize: 'clamp(2.2rem,5vw,4.2rem)', letterSpacing: '.04em', lineHeight: 1.0, marginBottom: 14, textShadow: '0 2px 20px rgba(0,0,0,0.8)', color: 'white' }}>
                               {featured.report.title}
                             </h3>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, color: 'rgba(255,255,255,0.75)' }}>
@@ -690,10 +605,10 @@ export function HomePage() {
                 </div>
               </div>
 
-              {/* ── GRID HEADER + PAGINATED CARDS ── */}
+              {/* Reports grid */}
               {allReports.length > 0 && (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
+                  <div className="rpt-grid-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div style={{ width: 4, height: 28, borderRadius: 2, background: `linear-gradient(to bottom, ${D.redDk}, ${D.red})` }} />
                       <div>
@@ -723,7 +638,7 @@ export function HomePage() {
                     )}
                   </div>
 
-                  {/* 3-col report cards */}
+                  {/* 3-col cards */}
                   <div className="hp-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, marginBottom: 24 }}>
                     {currentCards.map((report, cardIdx) => {
                       const images = getImages(report);
@@ -731,8 +646,7 @@ export function HomePage() {
                       return (
                         <div key={report.id} className="rpt-card"
                           style={{ background: 'white', borderRadius: 14, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', cursor: 'pointer', display: 'flex', flexDirection: 'column', position: 'relative', border: '1px solid rgba(220,60,30,0.08)' }}
-                          onClick={() => handleCardClick(report.id)}
-                        >
+                          onClick={() => handleCardClick(report.id)}>
                           <div style={{ position: 'absolute', top: -4, right: 10, fontFamily: "'Anton',sans-serif", fontSize: '7rem', color: 'rgba(0,0,0,0.03)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', letterSpacing: '-0.03em', zIndex: 1 }}>
                             {String(currentPage * reportsPerPage + cardIdx + 1).padStart(2, '0')}
                           </div>
@@ -804,7 +718,7 @@ export function HomePage() {
 
       {/* ══ CORE SERVICES ══ */}
       <section style={{ background: D.dark, borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 96, paddingBottom: 104 }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
+        <div className="services-section-pad" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
           <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '80%', height: '60%', background: 'radial-gradient(ellipse, rgba(220,60,30,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 60, position: 'relative', zIndex: 1 }}>
@@ -843,7 +757,7 @@ export function HomePage() {
 
             <div className="hm-cta-inner" style={{ position: 'relative', zIndex: 1, padding: '38px 46px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 28 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 22, flex: 1, minWidth: 240 }}>
-                <div style={{ width: 66, height: 66, borderRadius: 12, background: `linear-gradient(135deg,${D.redDk},${D.red})`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 32px rgba(220,60,30,0.45)', flexShrink: 0, animation: 'hm-pulse 3s infinite' }}>
+                <div className="hm-cta-icon" style={{ width: 66, height: 66, borderRadius: 12, background: `linear-gradient(135deg,${D.redDk},${D.red})`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 32px rgba(220,60,30,0.45)', flexShrink: 0, animation: 'hm-pulse 3s infinite' }}>
                   <Flame size={30} style={{ color: 'white' }} />
                 </div>
                 <div>
