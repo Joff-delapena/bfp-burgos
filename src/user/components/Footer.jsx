@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, ExternalLink, Shield } from 'lucide-react';
 
 export function Footer() {
